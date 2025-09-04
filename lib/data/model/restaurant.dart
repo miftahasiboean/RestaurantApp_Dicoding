@@ -4,7 +4,7 @@ class Restaurant {
   final String description;
   final String pictureId;
   final String city;
-  final int rating;
+  final double rating;
 
   Restaurant({
     required this.id,
@@ -23,7 +23,7 @@ class Restaurant {
         "description": String description,
         "pictureId": String pictureId,
         "city": String city,
-        "rating": int rating,
+        "rating": double rating,
       } =>
         Restaurant(
           id: id,
