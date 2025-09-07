@@ -1,53 +1,65 @@
 class Restaurant {
   final String id;
-  final String name;
-  final String description;
-  final String pictureId;
-  final String city;
-  final double rating;
-  final List<Category> categories;
-  final Menus menus;
-  final List<CustomerReview> customerReview;
+  final String? name;
+  final String? description;
+  final String? address;
+  final String? pictureId;
+  final String? city;
+  final double? rating;
+  final List<Category>? categories;
+  final Menus? menus;
+  final List<CustomerReview>? customerReviews;
 
   Restaurant({
     required this.id,
     required this.name,
     required this.description,
+    required this.address,
     required this.pictureId,
     required this.city,
     required this.rating,
     required this.categories,
     required this.menus,
-    required this.customerReview,
+    required this.customerReviews,
   });
 
-  factory Restaurant.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        "id": String id,
-        "name": String name,
-        "description": String description,
-        "pictureId": String pictureId,
-        "city": String city,
-        "rating": double rating,
-        "categories": List<Category> categories,
-        "menus": Menus menus,
-        "customerReview": List<CustomerReview> customerReview,
-      } =>
-        Restaurant(
-          id: id,
-          name: name,
-          description: description,
-          pictureId: pictureId,
-          city: city,
-          rating: rating,
-          categories: categories,
-          menus: menus,
-          customerReview: customerReview,
-        ),
-      _ => throw const FormatException('Failed to load Restaurant data.'),
-    };
-  }
+  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
+    id: json["id"],
+    name: json["name"],
+    description: json["description"],
+    city: json["city"],
+    address: json["address"],
+    pictureId: json["pictureId"],
+    categories: json["categories"] != null
+        ? List<Category>.from(
+            json["categories"].map((x) => Category.fromJson(x)),
+          )
+        : null,
+    menus: json["menus"] != null ? Menus.fromJson(json["menus"]) : null,
+    rating: json["rating"]?.toDouble(),
+    customerReviews: json["customerReviews"] != null
+        ? List<CustomerReview>.from(
+            json["customerReviews"].map((x) => CustomerReview.fromJson(x)),
+          )
+        : null,
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "description": description,
+    "city": city,
+    "address": address,
+    "pictureId": pictureId,
+    "categories": categories != null
+        ? List<dynamic>.from(categories!.map((x) => x.toJson()))
+        : null,
+    "menus": menus?.toJson(),
+    "rating": rating,
+    "customerReviews": customerReviews != null
+        ? List<dynamic>.from(customerReviews!.map((x) => x.toJson()))
+        : null,
+  };
 }
 
 class Category {
@@ -55,9 +67,10 @@ class Category {
 
   Category({required this.name});
 
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(name: json["name"]);
-  }
+  factory Category.fromJson(Map<String, dynamic> json) =>
+      Category(name: json["name"]);
+
+  Map<String, dynamic> toJson() => {"name": name};
 }
 
 class Menus {
@@ -66,16 +79,17 @@ class Menus {
 
   Menus({required this.foods, required this.drinks});
 
-  factory Menus.fromJson(Map<String, dynamic> json) {
-    return Menus(
-      foods: List<Category>.from(
-        json["foods"].map((x) => Category.fromJson(x)),
-      ),
-      drinks: List<Category>.from(
-        json["drinks"].map((x) => Category.fromJson(x)),
-      ),
-    );
-  }
+  factory Menus.fromJson(Map<String, dynamic> json) => Menus(
+    foods: List<Category>.from(json["foods"].map((x) => Category.fromJson(x))),
+    drinks: List<Category>.from(
+      json["drinks"].map((x) => Category.fromJson(x)),
+    ),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "foods": List<dynamic>.from(foods.map((x) => x.toJson())),
+    "drinks": List<dynamic>.from(drinks.map((x) => x.toJson())),
+  };
 }
 
 class CustomerReview {
@@ -89,11 +103,15 @@ class CustomerReview {
     required this.date,
   });
 
-  factory CustomerReview.fromJson(Map<String, dynamic> json) {
-    return CustomerReview(
-      name: json["name"],
-      date: json["date"],
-      review: json["review"],
-    );
-  }
+  factory CustomerReview.fromJson(Map<String, dynamic> json) => CustomerReview(
+    name: json["name"],
+    review: json["review"],
+    date: json["date"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "name": name,
+    "review": review,
+    "date": date,
+  };
 }
