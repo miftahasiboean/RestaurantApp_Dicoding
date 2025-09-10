@@ -4,6 +4,9 @@ import 'package:restaurant_app/data/api/api_service.dart';
 import 'package:restaurant_app/provider/detail/restaurant_detail_provider.dart';
 import 'package:restaurant_app/provider/home/restaurant_list_provider.dart';
 import 'package:restaurant_app/provider/search/restaurant_search_provider.dart';
+import 'package:restaurant_app/screen/detail/restaurant_detail_screen.dart';
+import 'package:restaurant_app/screen/main_screen.dart';
+import 'package:restaurant_app/static/navigation_route.dart';
 import 'package:restaurant_app/style/theme/restaurant_theme.dart';
 
 void main() {
@@ -39,6 +42,12 @@ class MainApp extends StatelessWidget {
       theme: RestaurantTheme.lightTheme,
       darkTheme: RestaurantTheme.darkTheme,
       themeMode: ThemeMode.system,
+      routes: {
+        NavigationRoute.mainRoute.name: (context) => const MainScreen(),
+        NavigationRoute.detailRoute.name: (context) => RestaurantDetailScreen(
+          restaurantId: ModalRoute.of(context)?.settings.arguments as String,
+        ),
+      },
     );
   }
 }
