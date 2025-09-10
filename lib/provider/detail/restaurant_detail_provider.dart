@@ -9,7 +9,7 @@ class RestaurantDetailProvider extends ChangeNotifier {
   RestaurantDetailResultState _resultState = RestaurantDetailNoneState();
   RestaurantDetailResultState get resultState => _resultState;
 
-  Future<void> fetchRestaurantDetail(int id) async {
+  Future<void> fetchRestaurantDetail(String id) async {
     try {
       _resultState = RestaurantDetailLoadingeState();
       notifyListeners();
